@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 
 const session = require('express-session');
 const passport = require('passport');
-const passportLocal = require('./config/passport.js')
+const passportLocal = require('./config/passportLocal.js')
 
 app.use(expressLayouts);
 app.set('layout extractStyles', true);

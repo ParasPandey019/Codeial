@@ -4,7 +4,9 @@ const LocalStrategy   = require('passport-local');
 const User = require('../models/users.js');
 
 
-passport.use(new LocalStrategy(async function verify(email, password, cb) {
+passport.use(new LocalStrategy({
+    usernameField: 'email'
+    },async function verify(email, password, cb) {
     const user = await User.findOne({email: email});
     
     if(!user || user.password != password){
