@@ -4,6 +4,9 @@ const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 
 
+const MongoStore = require('connect-mongo');
+
+
 const db = require('./config/mongoose.js');
 
 
@@ -37,7 +40,15 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000*60*100)
-    }
+    },
+    store: MongoStore.create(
+        {
+        mongoUrl: 'mongodb://127.0.0.1:27017/codial_developement',
+        autoRemove: 'disabled'
+        },function(err){
+            console.log(err || 'connect-mongodb setup OK');
+        }
+    ),
 }));
 
 app.use(passport.initialize());

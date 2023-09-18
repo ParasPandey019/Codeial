@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy   = require('passport-local').Strategy;
 
-const User = require('../models/users.js');
+const User = require('../models/users');
 
 
 passport.use(new LocalStrategy(
@@ -20,9 +20,7 @@ passport.use(new LocalStrategy(
 
 
 passport.serializeUser(function(user, cb) {
-    process.nextTick(function() {
       return cb(null, user.id);
-    });
 });
   
 
@@ -30,7 +28,7 @@ passport.deserializeUser(async function(id, cb) {
     const user = await User.findById(id);
     if(!user){
         console.log("Invalid Username");
-        return cb(null, false);
+        return cb(null);
     }
     return cb(null, user);
 });
@@ -55,3 +53,4 @@ passport.setAuthenticatedUser = function(req,res,next){
 
 
 module.exports = passport;
+
