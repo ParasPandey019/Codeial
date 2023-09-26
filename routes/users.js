@@ -10,7 +10,7 @@ const usersController = require('../controllers/users_controller');
 //     failureRedirect: '/users/sign-in'
 // }), usersController.profile);
 
-router.get('/profile',passport.checkAuthentication,usersController.profile)
+router.get('/profile/:id',passport.checkAuthentication,usersController.profile)
 
 router.get('/sign-in', usersController.signIn);
 
