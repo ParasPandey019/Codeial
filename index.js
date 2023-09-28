@@ -2,20 +2,17 @@ const express = require('express');
 const app = express();
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
-
-
 const MongoStore = require('connect-mongo');
-
-
 const db = require('./config/mongoose.js');
-
-
 const cookieParser = require('cookie-parser');
-
-
 const session = require('express-session');
 const passport = require('passport');
-const passportLocal = require('./config/passportLocal.js')
+const passportLocal = require('./config/passportLocal.js');
+const flash = require('connect-flash');
+const customMiddleware = require('./config/middleware.js');
+
+
+
 
 app.use(expressLayouts);
 app.set('layout extractStyles', true);
@@ -55,6 +52,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+
+
+app.use(flash());
+app.use(customMiddleware.setFlash);
 
 // using express router
 app.use('/',require("./routes/index"));
