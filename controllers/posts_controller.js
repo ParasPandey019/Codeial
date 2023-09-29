@@ -8,6 +8,14 @@ module.exports.create =async function(req, res){
     });
 
     await newPost.save();
+
+    if(req.xhr){
+        return res.status(200).json({
+            post: newPost,
+            message: "Post created!"
+        })
+    }
+    
     return res.redirect('back');
 }
 
