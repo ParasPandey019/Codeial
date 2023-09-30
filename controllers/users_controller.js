@@ -1,4 +1,6 @@
 const User = require("../models/users.js");
+const fs = require("fs");
+const path = require("path");
 
 
 module.exports.profile =async function(req,res){
@@ -11,11 +13,22 @@ module.exports.profile =async function(req,res){
 
 module.exports.update = async function(req,res){
     if(req.user.id == req.params.id){
-       const user = await User.findByIdAndUpdate(req.params.id, {
-            name: req.body.name,
-            email: req.body.email
-        });
+        let user = await User.findById(req.params.id);
+        User.uploadedAvatar(req, res, function(err){
+            if(err){console.log("multer error", err);}
+            else{
+                user.name = req.body.name;
+                user.email = req.body.email;
+                if(req.file){
+                    if (user.avatar){
+                        fs.unlinkSync(path.join(__dirname , '..', user.avatar));
+                    }
 
+                    user.avatar = User.avatarPath +'/' + req.file.filename;
+                }
+                user.save();
+            }
+        })
         if(!user){
             return res.status(401).send('Unauthorized');
         }
