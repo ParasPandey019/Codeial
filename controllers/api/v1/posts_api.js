@@ -28,8 +28,9 @@ module.exports.destroy =async function(req, res){
         await Comment.deleteMany({
             post: req.params.id,
         })
-            return res.json(200, {message: "Post and associated comments deleted"});
-    }catch{
+        return res.json(200, {message: "Post and associated comments deleted"});
+    }catch(err){
+        console.log(err);
         return res.json(500, {message: "Internal server error"})
     }
 
